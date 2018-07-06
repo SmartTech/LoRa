@@ -5,6 +5,7 @@
 
 #include "TypeDef.h"
 
+
 #define SPI_READ  0b00000000
 #define SPI_WRITE 0b10000000
 

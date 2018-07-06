@@ -7,7 +7,7 @@
   #include "WProgram.h"
 #endif
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
   //#define VERBOSE
@@ -21,6 +21,8 @@
     ((byte & 0x02) ? '1' : '0'), \
     ((byte & 0x01) ? '1' : '0') 
 #endif
+
+//#define USE_SPI_TRANSACTION
 
 #define ERR_NONE                        0x00
 #define ERR_CHIP_NOT_FOUND              0x01

@@ -10,16 +10,16 @@ SX127x::SX127x(SPIClass* _spi, Chip ch, int dio0, int dio1)
 uint8_t SX127x::begin() {
   uint8_t i = 0;
   bool flagFound = false;
-  while((i < 10) && !flagFound) {
+  while((i < 50) && !flagFound) {
     uint8_t version = readRegister(SX127X_REG_VERSION);
-    if(version == 0x12) {
+    if(version == 0x22) {
       flagFound = true;
     } else {
       #ifdef DEBUG
         Serial.print(getChipName());
         Serial.print(" not found! (");
         Serial.print(i + 1);
-        Serial.print(" of 10 tries) REG_VERSION == ");
+        Serial.print(" of 50 tries) REG_VERSION == ");
         
         char buffHex[5];
         sprintf(buffHex, "0x%02X", version);
@@ -42,7 +42,7 @@ uint8_t SX127x::begin() {
   #ifdef DEBUG
     else {
       Serial.print(getChipName());
-      Serial.println(" found! (match by REG_VERSION == 0x12)");
+      Serial.println(" found! (match by REG_VERSION == 0x22)");
     }
   #endif
   
@@ -70,7 +70,7 @@ uint8_t SX127x::tx(char* data, uint8_t length) {
   unsigned long start = millis();
   while(!digitalRead(_dio0)) {
     //TODO: calculate timeout dynamically based on modem settings
-    if(millis() - start > (length * 1500)) {
+    if(millis() - start > (length * 1000)) { // 1500
       clearIRQFlags();
       return(ERR_TX_TIMEOUT);
     }

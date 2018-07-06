@@ -57,9 +57,13 @@ uint8_t Module::readRegisterBurstStr(uint8_t reg, uint8_t numBytes, char* inByte
 uint8_t Module::readRegister(uint8_t reg) {
   uint8_t inByte;
   digitalWrite(_nss, LOW);
+  #ifdef USE_SPI_TRANSACTION
   _SPI->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  #endif
   _SPI->transfer(reg | SPI_READ);
+  #ifdef USE_SPI_TRANSACTION
   _SPI->endTransaction();
+  #endif
   inByte = _SPI->transfer(0x00);
   digitalWrite(_nss, HIGH);
   return(inByte);
@@ -97,9 +101,13 @@ void Module::writeRegisterBurstStr(uint8_t reg, const char* data, uint8_t numByt
 
 void Module::writeRegister(uint8_t reg, uint8_t data) {
   digitalWrite(_nss, LOW);
+  #ifdef USE_SPI_TRANSACTION
   _SPI->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  #endif
   _SPI->transfer(reg | SPI_WRITE);
   _SPI->transfer(data);
+  #ifdef USE_SPI_TRANSACTION
   _SPI->endTransaction();
+  #endif
   digitalWrite(_nss, HIGH);
 }

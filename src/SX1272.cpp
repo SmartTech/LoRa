@@ -14,6 +14,9 @@ SX1272::SX1272(SPIClass* _spi, int nss, float freq, Bandwidth bw, SpreadingFacto
 }
 
 uint8_t SX1272::begin() {
+	#ifdef DEBUG
+		Serial.println("initModule");
+	#endif
   // initialize low-level drivers
   initModule(_nss, _dio0, _dio1);
   
@@ -74,66 +77,140 @@ uint8_t SX1272::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr, float fr
   uint8_t status = ERR_NONE;
   uint8_t newBandwidth, newSpreadingFactor, newCodingRate;
   
+  #ifdef DEBUG
+  Serial.println("Config SX1272:");
+  #endif
+  
+  #ifdef DEBUG
+  Serial.print("BW: ");
+  #endif
   // check the supplied BW, CR and SF values
   switch(bw) {
     case BW_125_00_KHZ:
       newBandwidth = SX1272_BW_125_00_KHZ;
+	  #ifdef DEBUG
+	  Serial.println("BW_125_00_KHZ");
+	  #endif
       break;
     case BW_250_00_KHZ:
       newBandwidth = SX1272_BW_250_00_KHZ;
+	  #ifdef DEBUG
+	  Serial.println("BW_250_00_KHZ");
+	  #endif
       break;
     case BW_500_00_KHZ:
       newBandwidth = SX1272_BW_500_00_KHZ;
+	  #ifdef DEBUG
+	  Serial.println("BW_500_00_KHZ");
+	  #endif
       break;
     default:
+	  #ifdef DEBUG
+	  Serial.println("ERR_INVALID_BANDWIDTH");
+	  #endif
       return(ERR_INVALID_BANDWIDTH);
   }
   
+  #ifdef DEBUG
+  Serial.print("SF: ");
+  #endif
   switch(sf) {
     case SF_6:
       newSpreadingFactor = SX127X_SF_6;
+	  #ifdef DEBUG
+	  Serial.println("SF_6");
+	  #endif
       break;
     case SF_7:
       newSpreadingFactor = SX127X_SF_7;
+	  #ifdef DEBUG
+	  Serial.println("SF_7");
+	  #endif
       break;
     case SF_8:
       newSpreadingFactor = SX127X_SF_8;
+	  #ifdef DEBUG
+	  Serial.println("SF_8");
+	  #endif
       break;
     case SF_9:
       newSpreadingFactor = SX127X_SF_9;
+	  #ifdef DEBUG
+	  Serial.println("SF_9");
+	  #endif
       break;
     case SF_10:
       newSpreadingFactor = SX127X_SF_10;
+	  #ifdef DEBUG
+	  Serial.println("SF_10");
+	  #endif
       break;
     case SF_11:
       newSpreadingFactor = SX127X_SF_11;
+	  #ifdef DEBUG
+	  Serial.println("SF_11");
+	  #endif
       break;
     case SF_12:
       newSpreadingFactor = SX127X_SF_12;
+	  #ifdef DEBUG
+	  Serial.println("SF_12");
+	  #endif
       break;
     default:
+	  #ifdef DEBUG
+	  Serial.println("ERR_INVALID_SPREADING_FACTOR");
+	  #endif
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
+  #ifdef DEBUG
+  Serial.print("CR: ");
+  #endif
   switch(cr) {
     case CR_4_5:
+	  #ifdef DEBUG
+	  Serial.println(CR_4_5);
+	  #endif
       newCodingRate = SX1272_CR_4_5;
       break;
     case CR_4_6:
+	  #ifdef DEBUG
+	  Serial.println("CR_4_6");
+	  #endif
       newCodingRate = SX1272_CR_4_6;
       break;
     case CR_4_7:
+	  #ifdef DEBUG
+	  Serial.println("CR_4_7");
+	  #endif
       newCodingRate = SX1272_CR_4_7;
       break;
     case CR_4_8:
+	  #ifdef DEBUG
+	  Serial.println("CR_4_8");
+	  #endif
       newCodingRate = SX1272_CR_4_8;
       break;
     default:
+	  #ifdef DEBUG
+	  Serial.println("ERR_INVALID_CODING_RATE");
+	  #endif
       return(ERR_INVALID_CODING_RATE);
   }
   
+  #ifdef DEBUG
+  Serial.print("FREQ: ");
+  #endif
   if((freq < 860.0) || (freq > 1020.0)) {
+	  #ifdef DEBUG
+	  Serial.println("ERR_INVALID_FREQUENCY");
+	  #endif
     return(ERR_INVALID_FREQUENCY);
+  } else {
+	  #ifdef DEBUG
+	  Serial.println(freq);
+	  #endif
   }
   
   // execute common part

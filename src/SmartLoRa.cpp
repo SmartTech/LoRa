@@ -36,7 +36,7 @@ SmartLoRa::SmartLoRa(SPIClass* _spi, Chip ch, int nss, float freq, Bandwidth bw,
 
 uint8_t SmartLoRa::begin(uint16_t addrEeprom) {
   #ifdef DEBUG
-    Serial.begin(9600);
+    Serial.begin(115200);
     Serial.println();
   #endif
   
