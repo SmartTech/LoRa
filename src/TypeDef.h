@@ -7,7 +7,7 @@
   #include "WProgram.h"
 #endif
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
   //#define VERBOSE

@@ -151,6 +151,11 @@ void Packet::copyInto(Packet& pack) {
   strcpy(pack.data, data);
 }
 
+void Packet::setPacketData(uint8_t* dt, uint8_t size) {
+  if(size > sizeof(data)) return;
+  memcpy(&data, dt, size);
+}
+
 void Packet::setPacketData(char charArray[240]){
   strcpy(data, charArray);
 }

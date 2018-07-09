@@ -27,6 +27,7 @@ class Packet {
     uint8_t destination[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     char data[240];
     uint8_t length = 0;
+    uint8_t size = 0;
     
     void getSourceStr(char src[24]);
     void getDestinationStr(char dest[24]);
@@ -37,6 +38,7 @@ class Packet {
     void copyInto(Packet& pack);
     
     void setPacketData(char charArray[240]);
+    void setPacketData(uint8_t* dt, uint8_t size);
     void setPacketData(String str);
     void setPacketData(float f, uint8_t decimals = 3);
     

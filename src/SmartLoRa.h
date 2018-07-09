@@ -42,6 +42,11 @@ class SmartLoRa {
     uint8_t setSpreadingFactor(SpreadingFactor sf);
     uint8_t setCodingRate(CodingRate cr);
     uint8_t setFrequency(float freq);
+	
+	void    setAddress(uint8_t addr[8]);
+	void    setAddress(const char addr[24]);
+	void    setAddress(uint8_t d0,uint8_t d1,uint8_t d2,uint8_t d3,uint8_t d4,uint8_t d5,uint8_t d6,uint8_t d7);
+  
   
   private:
   
@@ -51,6 +56,7 @@ class SmartLoRa {
     uint8_t _address[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     uint16_t _addrEeprom;
     
+	uint8_t parseByte(char c);
     void generateLoRaAdress();
 };
 

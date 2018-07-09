@@ -145,6 +145,32 @@ uint8_t SmartLoRa::setFrequency(float freq) {
   return(_mod->setFrequency(freq));
 }
 
+uint8_t SmartLoRa::parseByte(char c) {
+  if((c >= 48) && (c <= 57)) {
+    return(c - 48);
+  } else if((c >= 65) && (c <= 70)) {
+    return(c - 55);
+  } else if((c >= 97) && (c <= 102)) {
+    return(c - 87);
+  }
+  return(0);
+}
+
+void SmartLoRa::setAddress(uint8_t addr[8]) {
+	for(uint8_t i=0; i<8; i++) _address[i] = addr[i];
+}
+
+void SmartLoRa::setAddress(const char addr[24]) {
+	for(uint8_t i = 0; i < 8; i++) {
+		_address[i] = (parseByte(addr[3*i]) << 4) | parseByte(addr[3*i + 1]);
+	}
+}
+
+void SmartLoRa::setAddress(uint8_t d0,uint8_t d1,uint8_t d2,uint8_t d3,uint8_t d4,uint8_t d5,uint8_t d6,uint8_t d7) {
+	_address[0] = d0; _address[1] = d1;	_address[2] = d2; _address[3] = d3;
+	_address[4] = d4; _address[5] = d5;	_address[6] = d6; _address[7] = d7;
+}
+
 void SmartLoRa::generateLoRaAdress() {
   for(uint8_t i = _addrEeprom; i < (_addrEeprom + 8); i++) {
     EEPROM.write(i, (uint8_t)random(0, 256));
