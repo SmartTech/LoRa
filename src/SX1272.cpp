@@ -202,7 +202,7 @@ uint8_t SX1272::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr, float fr
   #ifdef DEBUG
   Serial.print("FREQ: ");
   #endif
-  if((freq < 860.0) || (freq > 1020.0)) {
+  if((freq < LORA_FREQ_MIN) || (freq > LORA_FREQ_MAX)) {
 	  #ifdef DEBUG
 	  Serial.println("ERR_INVALID_FREQUENCY");
 	  #endif
