@@ -15,7 +15,8 @@ class Module {
 	Module();
 	Module(SPIClass* _spi);
 	
-    virtual uint8_t begin() = 0;
+    virtual uint8_t  begin() = 0;
+	virtual uint32_t handle() = 0;
     
     virtual uint8_t tx(char* data, uint8_t length) = 0;
     virtual uint8_t rxSingle(char* data, uint8_t* length) = 0;

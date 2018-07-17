@@ -46,14 +46,15 @@ class SX1272: public SX127x {
   public:
     SX1272(SPIClass* _spi, int nss, float freq, Bandwidth bw, SpreadingFactor sf, CodingRate cr, int dio0, int dio1);
     
-    uint8_t begin();
-    uint8_t rxSingle(char* data, uint8_t* length);
-    uint8_t config(Bandwidth bw, SpreadingFactor sf, CodingRate cr, float freq);
+    uint8_t  begin();
+    uint32_t handle();
+    uint8_t  rxSingle(char* data, uint8_t* length);
+    uint8_t  config(Bandwidth bw, SpreadingFactor sf, CodingRate cr, float freq);
     
-    uint8_t setBandwidth(Bandwidth bw);
-    uint8_t setSpreadingFactor(SpreadingFactor sf);
-    uint8_t setCodingRate(CodingRate cr);
-    uint8_t setFrequency(float freq);
+    uint8_t  setBandwidth(Bandwidth bw);
+    uint8_t  setSpreadingFactor(SpreadingFactor sf);
+    uint8_t  setCodingRate(CodingRate cr);
+    uint8_t  setFrequency(float freq);
   
   protected:
     Bandwidth _bw;

@@ -157,27 +157,72 @@
 //SX127X_REG_FIFO_RX_BASE_ADDR
 #define SX127X_FIFO_RX_BASE_ADDR_MAX                  0b00000000  //  7     0     allocate the entire FIFO buffer for RX only
 
+typedef enum
+{
+    RFLR_STATE_IDLE,
+    RFLR_STATE_RX_INIT,
+    RFLR_STATE_RX_RUNNING,
+    RFLR_STATE_RX_DONE,
+    RFLR_STATE_RX_TIMEOUT,
+    RFLR_STATE_TX_INIT,
+    RFLR_STATE_TX_RUNNING,
+    RFLR_STATE_TX_DONE,
+    RFLR_STATE_TX_TIMEOUT,
+    RFLR_STATE_CAD_INIT,
+    RFLR_STATE_CAD_RUNNING,
+}tRFLRStates;
+
+typedef enum {
+    RF_IDLE,
+    RF_BUSY,
+    RF_RX_DONE,
+    RF_RX_TIMEOUT,
+    RF_TX_DONE,
+    RF_TX_TIMEOUT,
+    RF_LEN_ERROR,
+    RF_CHANNEL_EMPTY,
+    RF_CHANNEL_ACTIVITY_DETECTED,
+} tRFProcessReturnCodes;
+
 class SX127x: public Module {
+	
   public:
+  
     SX127x(SPIClass* _spi, Chip ch, int dio0, int dio1);
     
-    uint8_t begin();
+    uint8_t  begin();
+	uint32_t handle();
     
-    uint8_t tx(char* data, uint8_t length);
-    uint8_t rxSingle(char* data, uint8_t* length, bool headerExplMode);
+    uint8_t  tx(char* data, uint8_t length);
+    uint8_t  rxSingle(char* data, uint8_t* length, bool headerExplMode);
     
-    uint8_t setMode(uint8_t mode);
-    uint8_t config(uint8_t bw, uint8_t sf, uint8_t cr, float freq);
-    int8_t getLastPacketRSSI();
-    float getLastPacketSNR();
+    uint8_t  setMode(uint8_t mode);
+    uint8_t  config(uint8_t bw, uint8_t sf, uint8_t cr, float freq);
+    int8_t   getLastPacketRSSI();
+    float    getLastPacketSNR();
   
   private:
+  
     Chip _ch;
-    int _dio0;
-    int _dio1;
+    int  _dio0;
+    int  _dio1;
     
-    void clearIRQFlags();
+    void        clearIRQFlags();
     const char* getChipName();
+	
+	uint8_t  RFLRState = RFLR_STATE_IDLE;
+	
+	void     processRxInit(void);
+	void     processTxInit(void);
+	void     processCadInit(void);
+	void     processRxRunning(void);
+	void     processTxRunning(void);
+	uint32_t processCadRunning(void);
+	uint32_t processRxDone(void);
+	uint32_t processTxDone(void);
+	uint32_t processRxTimeout(void);
+	uint32_t processTxTimeout(void);
+	
 };
 
 #endif

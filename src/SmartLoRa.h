@@ -29,7 +29,8 @@ class SmartLoRa {
     int8_t lastPacketRSSI;
     float lastPacketSNR;
     
-    uint8_t begin(uint16_t addrEeprom = 0);
+    uint8_t  begin(uint16_t addrEeprom = 0);
+	uint32_t handle();
     
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);

@@ -30,6 +30,10 @@ uint8_t SX1272::begin() {
   return(config(_bw, _sf, _cr, _freq));
 }
 
+uint32_t SX1272::handle() {
+	return SX127x::handle();
+}
+
 uint8_t SX1272::rxSingle(char* data, uint8_t* length) {
   // get header mode
   bool headerExplMode = false;

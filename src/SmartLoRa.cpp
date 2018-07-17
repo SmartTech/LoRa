@@ -82,6 +82,10 @@ uint8_t SmartLoRa::begin(uint16_t addrEeprom) {
   return(_mod->begin());
 }
 
+uint32_t SmartLoRa::handle() {
+	return (_mod->handle());
+}
+
 uint8_t SmartLoRa::transmit(Packet& pack) {
   char buffer[256];
   

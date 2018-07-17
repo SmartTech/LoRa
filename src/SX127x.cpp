@@ -202,3 +202,75 @@ const char* SX127x::getChipName() {
   const char* names[] = {"SX1272", "SX1273", "SX1276", "SX1277", "SX1278", "SX1279"};
 	return(names[_ch]);
 }
+
+void SX127x::processRxInit(void) {
+	setMode(SX127X_STANDBY);
+	
+	//...
+	
+	RFLRState = RFLR_STATE_RX_RUNNING;
+}
+
+void SX127x::processTxInit(void) {
+	//...
+	RFLRState = RFLR_STATE_TX_RUNNING;
+}
+
+void SX127x::processCadInit(void) {
+	//...
+	RFLRState = RFLR_STATE_CAD_RUNNING;
+}
+
+void SX127x::processRxRunning(void) {
+	//...
+}
+
+void SX127x::processTxRunning(void) {
+	//...
+}
+
+uint32_t SX127x::processCadRunning(void) {
+	//...
+}
+
+uint32_t SX127x::processRxDone(void) {
+	//...
+	return RF_RX_DONE;
+}
+
+uint32_t SX127x::processTxDone(void) {
+	//SX1272LoRaSetOpMode( RFLR_OPMODE_STANDBY );
+	RFLRState = RFLR_STATE_IDLE;
+	return RF_TX_DONE;
+}
+
+uint32_t SX127x::processRxTimeout(void) {
+	RFLRState = RFLR_STATE_RX_INIT;
+	return RF_RX_TIMEOUT;
+}
+
+uint32_t SX127x::processTxTimeout(void) {
+	RFLRState = RFLR_STATE_TX_INIT;
+	return RF_TX_TIMEOUT;
+}
+
+uint32_t SX127x::handle(void) {
+	uint32_t result = RF_BUSY;
+	switch(RFLRState) {
+		case RFLR_STATE_IDLE        : break;
+		case RFLR_STATE_RX_INIT     : processRxInit(); break;
+		case RFLR_STATE_TX_INIT     : processTxInit(); break;
+		case RFLR_STATE_CAD_INIT    : processCadInit(); break;
+		case RFLR_STATE_RX_RUNNING  : processRxRunning(); break;
+		case RFLR_STATE_TX_RUNNING  : processTxRunning(); break;
+		case RFLR_STATE_RX_DONE     : result = processRxDone(); break;
+		case RFLR_STATE_TX_DONE     : result = processTxDone(); break;
+		case RFLR_STATE_CAD_RUNNING : result = processCadRunning(); break;
+		case RFLR_STATE_RX_TIMEOUT  : result = processRxTimeout(); break;
+		case RFLR_STATE_TX_TIMEOUT  : break; // не используется
+		default: break;
+	}
+	return result;
+}
+
+
