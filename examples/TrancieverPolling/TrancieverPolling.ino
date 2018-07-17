@@ -1,4 +1,5 @@
 #include <SmartTech_sx1272.h>
+#include <Packet.h>
 #include <EEPROM.h>
 
 #define EEPROM_ADDR     10
@@ -16,12 +17,14 @@
 tRadioDriver* lora = NULL;
 SPIClass LoraSPI(LORA_SPI);
 
-const char* localAddr;
-const char* remoteAddr;
+const char* getDeviceID();
 
 struct __packed config_t {
   tLoRaSettings settings = DEFAULT_LORA_SETTINGS;
 } config;
+
+Packet packRx;
+Packet packTx(getDeviceID(), NULL, "");
 
 void setup() {
 
@@ -53,10 +56,21 @@ void loop() {
   
   switch( lora->handle() ) {
 
-      case RF_RX_TIMEOUT : lora->setTxPacket( 0, 10 ); break;
+      case RF_RX_TIMEOUT : lora->setTxPacket( &packTx, packTx.length ); break;
       case RF_TX_TIMEOUT : lora->startRx(); break;
-      case RF_RX_DONE    : lora->setTxPacket( 0, 10 ); break;
-      case RF_TX_DONE    : lora->startRx(); break;
+      case RF_RX_DONE : 
+        // разбираем полученные данные
+        uint8_t  buf[RF_BUFFER_SIZE_MAX];
+        uint16_t sizeRx;
+        memset(buf, 0, RF_BUFFER_SIZE_MAX);
+        lora->getRxPacket(&buf, &sizeRx);
+        setPacketData(buf, sizeRx);
+        // затем отправляем пакет
+        lora->setTxPacket( &packTx, packTx.length );
+        break;
+      case RF_TX_DONE : 
+        lora->startRx();
+        break;
         
   }
 

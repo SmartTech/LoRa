@@ -27,7 +27,7 @@ class Packet {
     uint8_t destination[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     char data[240];
     uint8_t length = 0;
-    uint8_t size = 0;
+    //uint8_t size = 0;
     
     void getSourceStr(char src[24]);
     void getDestinationStr(char dest[24]);
