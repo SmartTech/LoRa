@@ -41,7 +41,7 @@ typedef struct __packed sLoRaSettings
 	.FreqHopOn        = 0,        \
 	.HopPeriod        = 4,        \
 	.TxPacketTimeout  = 500,      \
-	.RxPacketTimeout  = 500,      \
+	.RxPacketTimeout  = 50,       \
 	.PayloadLength    = 128,      \
 }                                 \
 
