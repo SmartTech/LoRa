@@ -86,6 +86,10 @@ uint32_t SmartLoRa::handle() {
 	return (_mod->handle());
 }
 
+uint8_t SmartLoRa::transmit(char* data, uint8_t size) {
+	return(_mod->tx(data, size));
+}
+
 uint8_t SmartLoRa::transmit(Packet& pack) {
   char buffer[256];
   
@@ -101,6 +105,16 @@ uint8_t SmartLoRa::transmit(Packet& pack) {
   return(_mod->tx(buffer, pack.length));
 }
 
+uint8_t SmartLoRa::recieve(char* data, uint8_t* size) {
+	uint32_t startTime = millis();
+	uint8_t status = _mod->rxSingle(data, size);
+	uint32_t elapsedTime = millis() - startTime;
+	dataRate = (*size*8.0)/((float)elapsedTime/1000.0);
+	lastPacketRSSI = _mod->getLastPacketRSSI();
+	lastPacketSNR = _mod->getLastPacketSNR();
+	return status;
+}
+	
 uint8_t SmartLoRa::receive(Packet& pack) {
   char buffer[256];
   uint32_t startTime = millis();
