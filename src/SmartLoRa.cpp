@@ -105,7 +105,7 @@ uint8_t SmartLoRa::transmit(Packet& pack) {
   return(_mod->tx(buffer, pack.length));
 }
 
-uint8_t SmartLoRa::recieve(char* data, uint8_t* size) {
+uint8_t SmartLoRa::receive(char* data, uint8_t* size) {
 	uint32_t startTime = millis();
 	uint8_t status = _mod->rxSingle(data, size);
 	uint32_t elapsedTime = millis() - startTime;

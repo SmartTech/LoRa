@@ -36,7 +36,7 @@ class SmartLoRa {
     uint8_t receive(Packet& pack);
 	
 	uint8_t transmit(char* data, uint8_t  size);
-	uint8_t recieve (char* data, uint8_t* size);
+	uint8_t receive (char* data, uint8_t* size);
 	
     //TODO: CAD mode
     
